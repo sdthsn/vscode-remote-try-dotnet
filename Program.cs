@@ -1,8 +1,18 @@
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add CORS policy to accept requests from any origin
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
-
+app.UseCors();
 app.Urls.Add("http://localhost:5000");
 
 app.MapGet("/", () => "Hello World!");
@@ -39,7 +49,6 @@ app.MapGet("/image", () =>
 });
 
 app.Run();
-
 
 Weather GetWeatherByCity(string cityName)
 {
